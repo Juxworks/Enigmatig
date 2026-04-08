@@ -579,6 +579,156 @@
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--off); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       MOBILE  ≤ 768px
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* ── Nav: hide links, keep logo + CTA ── */
+      .nav__links { display: none; }
+      nav { padding: 1rem 6vw; }
+      .nav__cta { padding: 0.5rem 1rem; font-size: 0.65rem; }
+
+      /* ── Hero ── */
+      .hero {
+        padding: 100px 6vw 220px;
+        min-height: 100svh;
+        justify-content: flex-start;
+        padding-top: 110px;
+      }
+
+      .hero__label {
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
+        margin-bottom: 1.2rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.6rem, 11vw, 4rem);
+        line-height: 1.18;
+      }
+
+      .hero h1 .ambitions { margin-top: -0.12em; }
+
+      .hero__subtext {
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
+        max-width: 100%;
+      }
+
+      .hero__stats {
+        gap: 1.6rem;
+        margin-top: 2rem;
+      }
+
+      .hero__stat-num { font-size: 1.5rem; }
+      .hero__stat-label { font-size: 0.62rem; }
+
+      /* Hide decorative skyline — too cramped on mobile */
+      .hero__image { display: none; }
+
+      /* Ribbon: smaller fold triangles, less padding */
+      .hero__ribbon {
+        padding: 24px 6vw;
+        bottom: 8%;
+      }
+      .hero__ribbon::after {
+        border-top-width: 50px;
+        border-left-width: 50px;
+      }
+      .hero__ribbon::before {
+        border-top-width: 50px;
+        border-right-width: 50px;
+      }
+      .hero__ribbon-text {
+        padding: 0 50px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+      }
+      .hero__ribbon-shadow { bottom: calc(8% - 14px); }
+
+      /* ── Bands: stack vertically ── */
+      .band {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14vw 6vw 10vw;
+        margin-top: -44px;
+        gap: 2rem;
+      }
+
+      /* Reduce diagonal clip offset so edges still show on small screens */
+      .band--a { clip-path: polygon(0 44px, 100% 0, 100% 100%, 0 100%); }
+      .band--b { clip-path: polygon(0 0, 100% 44px, 100% 100%, 0 calc(100% - 44px)); }
+      .band--c { clip-path: polygon(0 44px, 100% 0, 100% calc(100% - 44px), 0 100%); }
+      .band--d { clip-path: polygon(0 0, 100% 44px, 100% 100%, 0 calc(100% - 44px)); }
+      .band--e { clip-path: polygon(0 44px, 100% 0, 100% 100%, 0 100%); }
+
+      .band::before { height: 60px; }
+
+      /* Number: smaller, sits above text */
+      .band__num {
+        font-size: clamp(3rem, 16vw, 5rem);
+        align-self: flex-end;
+        margin-bottom: -1.5rem;
+      }
+
+      .band h2 { font-size: clamp(1.5rem, 6vw, 2rem); }
+
+      .band p {
+        font-size: 0.88rem;
+        max-width: 100%;
+      }
+
+      .band__bullets li { font-size: 0.82rem; }
+
+      /* Images: full-width strip below text, no diagonal clip */
+      .band__img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        align-self: stretch;
+      }
+
+      /* Fold corner tails: scale to match reduced margin */
+      .band--a::after,
+      .band--b::after,
+      .band--c::after {
+        bottom: -20px;
+        border-top-width: 20px;
+      }
+      .band--a::after { border-left-width: 40px; }
+      .band--b::after { border-left-width: 40px; }
+      .band--c::after { border-left-width: 40px; }
+
+      /* ── Jurisdictions ticker: hide label ── */
+      .jurisdictions { padding: 2.5rem 0; gap: 0; }
+      .jurisdictions__label { display: none; }
+
+      /* ── Footer ── */
+      .footer__top {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .footer__bottom {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      footer { padding: 3rem 6vw 2rem; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SMALL PHONES  ≤ 390px
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 390px) {
+      .hero h1 { font-size: clamp(2.2rem, 12vw, 2.8rem); }
+      .hero__stats { gap: 1.2rem; }
+      .hero__stat-num { font-size: 1.3rem; }
+      .band { padding: 16vw 6vw 12vw; }
+    }
   </style>
 </head>
 <body>
