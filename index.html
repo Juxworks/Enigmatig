@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enigmatig — One-Stop Offshore Service Provider</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --white:   #ffffff;
+      --off:     #f5f3f0;
+      --accent:  #ff4701;
+      --mid:     #1a1a2e;
+      --light:   #e8e4df;
+      --sand:    #d4c9bc;
+    }
+
+    html, body {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      background: var(--off);
+      color: var(--mid);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 8vw;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .nav__logo {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+      color: var(--mid);
+      text-decoration: none;
+    }
+    /* E highlighted, rest normal */
+    .nav__logo .logo-e { color: var(--accent); }
+
+    .nav__links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+    .nav__links a:hover { opacity: 1; }
+
+    .nav__cta {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--accent);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav__cta:hover { opacity: 0.85; }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 120px 8vw 280px;   /* extra bottom padding — space for floating ribbon */
+      background: var(--white);
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero__label {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero h1 {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(3rem, 7.5vw, 7.5rem);
+      font-weight: 400;
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+      max-width: 13ch;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+      display: block;
+    }
+
+    /* Pull "Ambitions" up — tighter gap below Global only */
+    .hero h1 .ambitions {
+      display: block;
+      margin-top: -0.18em;
+    }
+
+    .hero__subtext {
+      margin-top: 2.5rem;
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      color: #666;
+      max-width: 42ch;
+      line-height: 1.7;
+      font-weight: 500;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero__stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero__stat-num {
+      font-family: 'Michroma', sans-serif;
+      font-size: 2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .hero__stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-top: 0.3rem;
+    }
+
+    /* ─── HERO SKYLINE IMAGE ─────────────────────────────────── */
+    .hero__image {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 44%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      z-index: 2;
+      /* Fade left edge into white bg; fade bottom 30% above ribbon */
+      -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, black 30%),
+        linear-gradient(to top,   transparent 0%, black 35%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(to right, transparent 0%, black 30%),
+        linear-gradient(to top,   transparent 0%, black 35%);
+      mask-composite: intersect;
+      opacity: 0.38;
+    }
+
+    /* ─── HERO RIBBON ───────────────────────────────────────── */
+    .hero__ribbon {
+      position: absolute;
+      left: 0;
+      bottom: 10%;            /* lowered — more clearance from heading */
+      width: 100%;
+      background: var(--accent);
+      padding: 40px 8vw;
+      z-index: 4;
+      will-change: transform;
+    }
+
+    /* fold triangle — top-right */
+    .hero__ribbon::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 0; height: 0;
+      border-top:  90px solid var(--white);
+      border-left: 90px solid transparent;
+    }
+
+    /* fold triangle — top-left */
+    .hero__ribbon::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-top:   90px solid var(--white);
+      border-right: 90px solid transparent;
+    }
+
+    /* shadow for float lift */
+    .hero__ribbon-shadow {
+      position: absolute;
+      left: 4%; right: 4%;
+      bottom: calc(10% - 20px);
+      height: 20px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.28) 0%, transparent 70%);
+      z-index: 3;
+      will-change: transform;
+    }
+
+    .hero__ribbon-text {
+      color: var(--white);
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0 90px;            /* clear the fold triangles */
+    }
+
+    /* angled bottom edge of hero */
+    .hero__edge {
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 100%;
+      height: 100px;
+      background: var(--off);
+      clip-path: polygon(0 100%, 100% 0, 100% 100%);
+      z-index: 5;
+    }
+
+    /* ─── RIBBON BANDS ──────────────────────────────────────── */
+    .band {
+      position: relative;
+      width: 100%;
+      padding: 10vw 8vw;
+      display: flex;
+      align-items: center;
+      gap: 6vw;
+      margin-top: -80px;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .band--a {
+      background: var(--accent);
+      color: var(--white);
+      clip-path: polygon(0 80px, 100% 0, 100% calc(100% - 0px), 0 100%);
+    }
+
+    .band--b {
+      background: var(--mid);
+      color: var(--white);
+      clip-path: polygon(0 0, 100% 80px, 100% 100%, 0 calc(100% - 80px));
+    }
+
+    .band--c {
+      background: var(--light);
+      color: var(--mid);
+      clip-path: polygon(0 80px, 100% 0, 100% calc(100% - 80px), 0 100%);
+    }
+
+    .band--d {
+      background: var(--sand);
+      color: var(--mid);
+      clip-path: polygon(0 0, 100% 80px, 100% calc(100% - 0px), 0 calc(100% - 80px));
+    }
+
+    .band--e {
+      background: var(--white);
+      color: var(--mid);
+      clip-path: polygon(0 80px, 100% 0, 100% 100%, 0 100%);
+      margin-bottom: 0;
+    }
+
+    /* fold shadow at top edge of each band */
+    .band::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.08), transparent);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── BAND CONTENT ──────────────────────────────────────── */
+    .band__text {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .band__num {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+
+      /* default: semi-transparent white — works on dark/sand/light bands */
+      color: rgba(255,255,255,0.18);
+    }
+
+    /* ── Per-band number contrast ── */
+    /* band--a (orange): dark ink, strong */
+    .band--a .band__num {
+      color: rgba(0,0,0,0.45);
+    }
+
+    /* band--b (dark navy): bright white */
+    .band--b .band__num {
+      color: rgba(255,255,255,0.40);
+    }
+
+    /* band--c (light grey): dark ink */
+    .band--c .band__num {
+      color: rgba(0,0,0,0.28);
+    }
+
+    /* band--d (sand): dark ink */
+    .band--d .band__num {
+      color: rgba(0,0,0,0.28);
+    }
+
+    /* band--e (white): dark ink */
+    .band--e .band__num {
+      color: rgba(0,0,0,0.22);
+    }
+
+    .band__tag {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .band h2 {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .band p {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      line-height: 1.75;
+      opacity: 0.8;
+      max-width: 44ch;
+      font-weight: 500;
+    }
+
+    .band__bullets {
+      margin-top: 1.25rem;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .band__bullets li {
+      font-size: clamp(0.82rem, 1.2vw, 0.95rem);
+      opacity: 0.75;
+      padding-left: 1.2em;
+      position: relative;
+      font-weight: 500;
+    }
+
+    .band__bullets li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      opacity: 0.5;
+    }
+
+    /* ─── BAND IMAGE PANEL ───────────────────────────────────── */
+    .band__img {
+      flex-shrink: 0;
+      width: clamp(220px, 30vw, 420px);
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      position: relative;
+      z-index: 2;
+      /* slight skew to echo the ribbon diagonal */
+      clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+    }
+
+    /* band--a image: tint to complement orange */
+    .band--a .band__img { filter: brightness(0.85) saturate(0.8); }
+    /* band--b image: slight warm tint */
+    .band--b .band__img { filter: brightness(0.75) saturate(0.7); }
+    /* band--c/d images: neutral */
+    .band--c .band__img, .band--d .band__img { filter: brightness(0.9) saturate(0.85); }
+
+    /* accent dot */
+    .dot {
+      display: inline-block;
+      width: 0.42em; height: 0.42em;
+      border-radius: 50%;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-left: 0.18em;
+      margin-bottom: 0.08em;
+      transform-origin: center bottom;
+      transform: scale(0);          /* starts hidden — spring pops it in */
+    }
+
+    /* ─── FOLD CORNER TAILS ─────────────────────────────────── */
+    .band--a::after,
+    .band--b::after,
+    .band--c::after {
+      content: '';
+      position: absolute;
+      bottom: -32px; left: 0;
+      width: 0; height: 0;
+      border-top: 32px solid transparent;
+      border-bottom: 0 solid transparent;
+    }
+    .band--a::after { border-left: 60px solid #c73600; }
+    .band--b::after { border-left: 60px solid #0d0d1a; }
+    .band--c::after { border-left: 60px solid #ccc8c2; }
+
+    /* ─── GSAP initial hidden state ─────────────────────────── */
+    /* GSAP sets these — CSS just provides starting state */
+    .band__text, .band__num, .band__img {
+      will-change: transform, opacity;
+    }
+
+    /* ─── HERO CONTENT INIT ─────────────────────────────────── */
+    .hero__content {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── JURISDICTIONS STRIP ─────────────────────────────── */
+    .jurisdictions {
+      background: var(--mid);
+      padding: 4rem 8vw;
+      display: flex;
+      align-items: center;
+      gap: 4vw;
+      overflow: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    .jurisdictions__label {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .jurisdictions__ticker {
+      display: flex;
+      gap: 3rem;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .jurisdictions__ticker span {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .jurisdictions__ticker span.accent { color: var(--accent); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--mid);
+      color: rgba(255,255,255,0.45);
+      padding: 4rem 8vw 3rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer__brand {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      letter-spacing: 0.06em;
+    }
+    .footer__brand .logo-e { color: var(--accent); }
+
+    .footer__tagline {
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      max-width: 30ch;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .footer__col-title {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .footer__col a {
+      display: block;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .footer__col a:hover { color: var(--white); }
+
+    .footer__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    footer em { color: var(--accent); font-style: normal; }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--off); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav__logo" href="#"><span class="logo-e">E</span>nigmatig</a>
+    <ul class="nav__links">
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Turnkey</a></li>
+      <li><a href="#">Jurisdictions</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <a class="nav__cta" href="#">Get Started</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__content">
+      <p class="hero__label">Est. 2010 &nbsp;·&nbsp; 32 Jurisdictions &nbsp;·&nbsp; Formerly Desfran</p>
+      <h1>Achieve<br>Your<br><em>Global</em><span class="ambitions">Ambitions<span class="dot" id="heroDot"></span></span></h1>
+      <p class="hero__subtext">One-stop offshore service provider with a global network of partners and a diversified portfolio of businesses.</p>
+      <div class="hero__stats">
+        <div>
+          <div class="hero__stat-num">15+</div>
+          <div class="hero__stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="hero__stat-num">32</div>
+          <div class="hero__stat-label">Jurisdictions</div>
+        </div>
+        <div>
+          <div class="hero__stat-num">2010</div>
+          <div class="hero__stat-label">Founded</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Singapore skyline — faded, right side -->
+    <img
+      class="hero__image"
+      src="brand_assets/singapore-skyline.webp"
+      alt="Singapore skyline"
+    />
+
+    <!-- Floating ribbon -->
+    <div class="hero__ribbon" id="heroRibbon">
+      <span class="hero__ribbon-text">One-Stop Offshore Service Provider &nbsp;—&nbsp; Enigmatig</span>
+    </div>
+    <div class="hero__ribbon-shadow" id="heroRibbonShadow"></div>
+
+    <!-- Angled edge -->
+    <div class="hero__edge"></div>
+  </section>
+
+  <!-- BAND 1 — FX Brokerage (accent orange) -->
+  <div class="band band--a">
+    <div class="band__num">01</div>
+    <div class="band__text">
+      <span class="band__tag">Core Expertise</span>
+      <h2>FX Brokerage<br>Consultancy</h2>
+      <p>Customised, integrated expertise in FX brokerage consultancy, regulatory advisory, and licensing — helping brokers achieve specific licences across global markets.</p>
+      <ul class="band__bullets">
+        <li>FX licensing across 32 jurisdictions</li>
+        <li>Regulatory compliance advisory</li>
+        <li>Technology platform management</li>
+        <li>Payment service provider tie-ups</li>
+      </ul>
+    </div>
+    <img class="band__img" src="brand_assets/crm.webp" alt="FX Brokerage" />
+  </div>
+
+  <!-- BAND 2 — Turnkey Solutions (dark) -->
+  <div class="band band--b">
+    <div class="band__num">02</div>
+    <div class="band__text">
+      <span class="band__tag">End-to-End</span>
+      <h2>Turnkey<br>Solutions</h2>
+      <p>One of the few international firms specialising in complete turnkey brokerage solutions. From advisory and implementation through to full operational build-out.</p>
+      <ul class="band__bullets">
+        <li>Advisory and strategic implementation</li>
+        <li>Brokerage setup and launch management</li>
+        <li>Platform selection and integration</li>
+        <li>Ongoing operational support</li>
+      </ul>
+    </div>
+    <img class="band__img" src="brand_assets/bridge_tech.webp" alt="Technology bridge" />
+  </div>
+
+  <!-- BAND 3 — Corporate Services (light) -->
+  <div class="band band--c">
+    <div class="band__num">03</div>
+    <div class="band__text">
+      <span class="band__tag">Corporate</span>
+      <h2>Corporate<br>Services</h2>
+      <p>A comprehensive array of corporate services to enhance operational capabilities and productivity — from restructuring to talent, secretarial to compliance.</p>
+      <ul class="band__bullets">
+        <li>Corporate restructuring</li>
+        <li>Talent acquisition and outsourcing</li>
+        <li>Secretarial and regulatory filing</li>
+        <li>Financial institution coordination</li>
+      </ul>
+    </div>
+    <img class="band__img" src="brand_assets/business-people-conference-and-meeting-in-modern-office.webp" alt="Corporate services" />
+  </div>
+
+  <!-- BAND 4 — IT & Web (sand) -->
+  <div class="band band--d">
+    <div class="band__num">04</div>
+    <div class="band__text">
+      <span class="band__tag">Technology</span>
+      <h2>IT Infrastructure<br>&amp; Web Solutions</h2>
+      <p>Customised website solutions and server management that give your business a reliable, secure digital presence — from hosting through to ongoing maintenance.</p>
+      <ul class="band__bullets">
+        <li>Website design and maintenance</li>
+        <li>Database and server management</li>
+        <li>Scripting software and hosting</li>
+        <li>IT infrastructure support</li>
+      </ul>
+    </div>
+    <img class="band__img" src="brand_assets/server_room.jpg" alt="IT Infrastructure" />
+  </div>
+
+  <!-- BAND 5 — About (white) -->
+  <div class="band band--e">
+    <div class="band__num">05</div>
+    <div class="band__text">
+      <span class="band__tag">About</span>
+      <h2>Intelligence.<br>Network.<br>Results<span class="dot"></span></h2>
+      <p>Our proven methodology is backed by deep local knowledge across jurisdictions and extensive experience in global financial services — built over more than 15 years.</p>
+      <ul class="band__bullets">
+        <li>Global network of specialist partners</li>
+        <li>Jurisdiction-specific local knowledge</li>
+        <li>Integrated expertise across all service lines</li>
+        <li>Trusted by brokerages and corporates worldwide</li>
+      </ul>
+    </div>
+    <img class="band__img" src="brand_assets/global_network.jpg" alt="Global network" />
+  </div>
+
+  <!-- JURISDICTIONS TICKER -->
+  <div class="jurisdictions">
+    <span class="jurisdictions__label">Jurisdictions</span>
+    <div class="jurisdictions__ticker">
+      <span>Cayman Islands</span><span class="accent">·</span>
+      <span>Mauritius</span><span class="accent">·</span>
+      <span>Seychelles</span><span class="accent">·</span>
+      <span>BVI</span><span class="accent">·</span>
+      <span>Cyprus</span><span class="accent">·</span>
+      <span>Malta</span><span class="accent">·</span>
+      <span>Singapore</span><span class="accent">·</span>
+      <span>Hong Kong</span><span class="accent">·</span>
+      <span>Vanuatu</span><span class="accent">·</span>
+      <span>Panama</span><span class="accent">·</span>
+      <span>UAE</span><span class="accent">·</span>
+      <span>Labuan</span><span class="accent">·</span>
+      <!-- duplicate for seamless loop -->
+      <span>Cayman Islands</span><span class="accent">·</span>
+      <span>Mauritius</span><span class="accent">·</span>
+      <span>Seychelles</span><span class="accent">·</span>
+      <span>BVI</span><span class="accent">·</span>
+      <span>Cyprus</span><span class="accent">·</span>
+      <span>Malta</span><span class="accent">·</span>
+      <span>Singapore</span><span class="accent">·</span>
+      <span>Hong Kong</span><span class="accent">·</span>
+      <span>Vanuatu</span><span class="accent">·</span>
+      <span>Panama</span><span class="accent">·</span>
+      <span>UAE</span><span class="accent">·</span>
+      <span>Labuan</span><span class="accent">·</span>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand"><span class="logo-e">E</span>nigmatig</div>
+        <p class="footer__tagline">One-stop offshore service provider with a global network of partners and a diversified portfolio of businesses.</p>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Services</div>
+        <a href="#">FX Brokerage Consultancy</a>
+        <a href="#">Turnkey Solutions</a>
+        <a href="#">Corporate Services</a>
+        <a href="#">IT Infrastructure</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Company</div>
+        <a href="#">About Us</a>
+        <a href="#">Investor Relations</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2024 <em>Enigmatig</em>. All rights reserved. Formerly known as Desfran.</p>
+      <p>Ticker: <em>EGG</em></p>
+    </div>
+  </footer>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger)
+
+    // ── Hero ribbon — GSAP floating idle + scroll parallax ──────
+    const ribbon       = document.getElementById('heroRibbon')
+    const ribbonShadow = document.getElementById('heroRibbonShadow')
+
+    // Idle float — horizontal drift only, no vertical movement
+    gsap.to(ribbon, {
+      x: 10,
+      duration: 3.8,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1
+    })
+    // Shadow subtly shifts with it but stays pinned vertically
+    gsap.to(ribbonShadow, {
+      x: 10,
+      scaleX: 0.97,
+      duration: 3.8,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1
+    })
+
+    // Scroll parallax — ribbon rides upward at 40% of scroll distance
+    gsap.to([ribbon, ribbonShadow], {
+      y: () => -(ScrollTrigger.maxScroll(window) * 0.15),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1.2
+      }
+    })
+
+    // ── Band reveal with GSAP ScrollTrigger ─────────────────────
+    document.querySelectorAll('.band').forEach((band, i) => {
+      const num  = band.querySelector('.band__num')
+      const text = band.querySelector('.band__text')
+      const img  = band.querySelector('.band__img')
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: band,
+          start: 'top 80%',
+          end: 'top 30%',
+          toggleActions: 'play none none none'
+        }
+      })
+
+      // Number slides in from far left — opacity target set per-band below
+      tl.fromTo(num,
+        { x: -60, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.9, ease: 'power3.out' },
+        0
+      )
+
+      // Text block slides up
+      tl.fromTo(text,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power3.out' },
+        0.1
+      )
+
+      // Image panel slides in from the right with clip reveal
+      if (img) {
+        tl.fromTo(img,
+          { x: 80, opacity: 0, clipPath: 'polygon(8% 0, 100% 0, 100% 100%, 8% 100%)' },
+          { x: 0, opacity: 1, clipPath: 'polygon(8% 0, 100% 0, 92% 100%, 0 100%)', duration: 1, ease: 'power3.out' },
+          0.18
+        )
+      }
+
+      // Let CSS color (rgba with alpha) control the apparent opacity —
+      // GSAP keeps element opacity at 1 so the CSS color alpha is respected
+      tl.set(num, { opacity: 1 }, '>')
+    })
+
+    // ── Hero ribbon — subtle band skew on scroll ──────────────────
+    document.querySelectorAll('.band').forEach((band) => {
+      gsap.to(band, {
+        '--band-skew': '2deg',
+        scrollTrigger: {
+          trigger: band,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      })
+    })
+
+    // ── Spring physics for hero dot ────────────────────────────────
+    // Implements a spring oscillator: F = -k(x - target) - damping*v
+    // matching React Spring's default tension/friction model.
+    ;(function () {
+      const dot = document.getElementById('heroDot')
+      if (!dot) return
+
+      const TENSION   = 280   // stiffness  (react-spring default ~170, boosted for pop)
+      const FRICTION  = 14    // damping    (react-spring default ~26, lower = more bounce)
+      const PRECISION = 0.001
+
+      let pos = 0             // current scale
+      let vel = 0
+      let target = 0
+      let raf = null
+
+      function step () {
+        const dt    = 1 / 60
+        const force = -TENSION * (pos - target) - FRICTION * vel
+        vel += force * dt
+        pos += vel * dt
+
+        dot.style.transform = `scale(${Math.max(0, pos)})`
+
+        const settled = Math.abs(pos - target) < PRECISION && Math.abs(vel) < PRECISION
+        if (!settled) {
+          raf = requestAnimationFrame(step)
+        } else {
+          dot.style.transform = `scale(${target})`
+          raf = null
+        }
+      }
+
+      function springTo (value) {
+        target = value
+        if (!raf) raf = requestAnimationFrame(step)
+      }
+
+      // Pop in after the hero text fades up (matches 1.2s animation delay)
+      setTimeout(() => springTo(1), 1100)
+
+      // Bounce on hover over the heading
+      const h1 = dot.closest('h1')
+      if (h1) {
+        h1.addEventListener('mouseenter', () => { springTo(1.6) })
+        h1.addEventListener('mouseleave', () => { springTo(1.0) })
+      }
+    })()
+  </script>
+</body>
+</html>
